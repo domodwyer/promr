@@ -12,7 +12,7 @@
 #' @return A tibble of all series returned by the server, with nested
 #'     measurements.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Run a simple range query against the specified host.
 #' query_range(
 #'   "up",

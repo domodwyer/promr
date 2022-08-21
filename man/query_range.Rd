@@ -37,7 +37,7 @@ measurements.
 Evaluate an expression query over a range of time.
 }
 \examples{
-\donttest{
+\dontrun{
 # Run a simple range query against the specified host.
 query_range(
   "up",
