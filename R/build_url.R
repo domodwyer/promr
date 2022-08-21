@@ -10,7 +10,6 @@
 #' @param timeout An optional query timeout value, defaulting to server-side
 #'     limit. Note this timeout is capped to the server-side value.
 #' @return A URL to execute the query.
-#' @NoRd
 build_url <- function(base, query, start, end, step, timeout = NA) {
     url <- urltools::url_parse(base)
     url$path <- "api/v1/query_range"
@@ -46,7 +45,6 @@ build_url <- function(base, query, start, end, step, timeout = NA) {
 #' @param input A RFC3339 timestamp string, numerical unix timestamp, or POSIXct
 #'     object.
 #' @return A Prometheus-compatible timestamp that can be coerced to a string.
-#' @NoRd
 cast_timestamp <- function(input) {
     out <- switch(typeof(input),
         "character" = input,
