@@ -6,3 +6,4 @@
 ^Makefile$
 ^\.vscode$
 ^TODO$
+^cran-comments.md$
