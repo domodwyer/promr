@@ -1,0 +1,23 @@
+Package: promr
+Type: Package
+Title: Prometheus PromQL Query Client for R
+Version: 0.1.0
+Authors@R: person("Dom", "Dwyer", email = "dom@itsallbroken.com", role = c("aut", "cre"))
+Maintainer: Dom Dwyer <dom@itsallbroken.com>
+Description: A native R client library for querying the Prometheus time-series 
+    database, using the PromQL query language.
+URL: https://github.com/domodwyer/promr
+BugReports: https://github.com/domodwyer/promr/issues
+License: Apache License (>= 2)
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    httptest,
+    testthat (>= 3.0.0)
+Imports: 
+    httr,
+    tibble,
+    urltools
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0

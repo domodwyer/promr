@@ -1,0 +1,86 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.path = "man/figures/README-",
+  fig.align = "center",
+  message = FALSE
+)
+# Redirect the example query to the local test response corpus
+httptest::use_mock_api()
+```
+
+# promr
+
+`promr` is a [PromQL] query client for the [Prometheus] time-series database.
+
+[PromQL]: https://prometheus.io/docs/prometheus/latest/querying/basics/
+[Prometheus]: https://prometheus.io/
+
+## Installation
+
+To install the development version using `devtools`:
+
+``` r
+devtools::install_github("domodwyer/promr")
+```
+
+## Example
+
+```{r query, echo=c(-4, -6)}
+library(promr)
+
+# Define your PromQL query
+# nolint start: line_length_linter
+q <- "sum by (handler, result) (rate(dml_handler_write_duration_seconds_count{}[1m]))"
+# nolint end
+
+# And execute the query within the specified time range
+df <- query_range(
+  q,
+  "2022-08-19T00:00:00Z",
+  "2022-08-20T00:00:00Z"
+)
+```
+
+Timestamps can be provided as `rfc3339` strings, numerical unix timestamps, or
+`POSIXct`. Optionally timeout, and step parameters can be provided.
+
+The output `df` contains all the returned series, with the measurements nested
+within. For this query, there are 10 series:
+
+```{r summary}
+print(df)
+```
+
+The unnested data can be easily extracted using `tidyr::unnest()` (part of of
+the `tidyverse`), to produce a “long” tibble of measurements:
+
+```{r unnest}
+df |>
+  tidyr::unnest(values) |>
+  head()
+```
+
+Which makes it easy to work on, and visualise the actual data:
+
+```{r plot}
+library(ggplot2)
+library(tidyverse)
+
+df |>
+  unnest(values) |>
+  filter(handler == "partitioner") |>
+  ggplot(aes(x = timestamp, y = value, colour = result)) +
+  geom_line() +
+  labs(
+    title = "Partitioner Calls",
+    x = "Time",
+    y = "Requests per Second"
+  )
+```
