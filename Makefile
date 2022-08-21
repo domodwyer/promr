@@ -15,7 +15,7 @@ build: install_deps
 	R CMD build .
 
 check: build
-	R CMD check --no-manual $(PKGNAME)_$(PKGVERS).tar.gz
+	R CMD check --no-manual --as-cran $(PKGNAME)_$(PKGVERS).tar.gz
 
 install_deps:
 	Rscript \
