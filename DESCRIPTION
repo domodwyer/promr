@@ -1,7 +1,7 @@
 Package: promr
 Type: Package
 Title: Prometheus PromQL Query Client for R
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: person("Dom", "Dwyer", email = "dom@itsallbroken.com", role = c("aut", "cre"))
 Description: A native R client library for querying the Prometheus time-series 
     database, using the PromQL query language.
