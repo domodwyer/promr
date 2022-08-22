@@ -89,6 +89,22 @@ with_mock_api({
     ))
     expect_equal(unique(got$result), c("error", "success"))
     expect_equal(nrow(got$values[[1]]), 8641)
-    expect_equal(ncol(got$values[[1]]), 2)
+    expect_equal(colnames(got$values[[1]]), c("timestamp", "value"))
+  })
+
+  test_that("single series aggregate", {
+    # nolint start: line_length_linter
+    q <- "sum(rate(dml_handler_write_duration_seconds_bucket{handler=\"sharded_write_buffer\"}[1m]))"
+    # nolint end
+
+    got <- query_range(
+      q,
+      "2022-08-21T00:00:00Z",
+      "2022-08-22T00:00:00Z"
+    )
+
+    expect_equal(got$`__name__`[[1]], q)
+    expect_equal(nrow(got$values[[1]]), 8641)
+    expect_equal(colnames(got$values[[1]]), c("timestamp", "value"))
   })
 })

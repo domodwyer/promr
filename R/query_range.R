@@ -72,6 +72,16 @@ query_range <- function(query,
     # Capture the name + labels
     row <- tibble::as_tibble(r$metric)
 
+    # If an aggregate produces a single series, the "metric" field is
+    # unpopulated.
+    #
+    # In this case, use the query as the metric name in the returned df.
+    if (nrow(row) == 0) {
+      row <- tibble::tibble(
+        `__name__` = query,
+      )
+    }
+
     # Compute the number of measurements in the tuple list
     values <- unlist(r$value)
     n_rows <- length(values) / 2
