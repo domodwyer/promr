@@ -33,8 +33,8 @@ df <- query_range(
 ```
 
 Timestamps can be provided as `rfc3339` strings, numerical unix
-timestamps, or `POSIXct`. Optionally timeout, and step parameters can be
-provided.
+timestamps, or `POSIXct` objects. Optionally `timeout`, and `step`
+parameters can be provided.
 
 The output `df` contains all the returned series, with the measurements
 nested within. For this query, there are 10 series:
