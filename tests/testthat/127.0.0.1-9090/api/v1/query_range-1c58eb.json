@@ -1,0 +1,5 @@
+{
+	"status": "error",
+	"errorType": "execution",
+	"error": "query processing would load too many samples into memory in query execution"
+}

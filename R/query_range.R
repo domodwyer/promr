@@ -56,12 +56,10 @@ query_range <- function(query,
 
   # Send the request and validate it succeeded
   r <- httr::GET(url)
-  if (r$status_code != 200) {
-    stop("bad response code ", r$status_code, ":", r$error)
-  }
-
-  # Parse the JSON response.
   d <- httr::content(r, "parsed")
+  if (r$status_code != 200 || d$status == "error") {
+    stop("query failure (HTTP ", r$status_code, "): ", d$error)
+  }
   if (d$data$resultType != "matrix") {
     stop("unexpected result type ", d$data$resultType)
   }

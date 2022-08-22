@@ -107,4 +107,18 @@ with_mock_api({
     expect_equal(nrow(got$values[[1]]), 8641)
     expect_equal(colnames(got$values[[1]]), c("timestamp", "value"))
   })
+
+  test_that("error messages are returned to the user", {
+    # nolint start: line_length_linter
+    q <- "sum(rate(dml_handler_write_duration_seconds_bucket{handler=\"bananas\"}[1m]))"
+
+    expect_snapshot_error(
+      query_range(
+        q,
+        "2022-08-21T00:00:00Z",
+        "2022-08-22T00:00:00Z"
+      )
+    )
+    # nolint end
+  })
 })
