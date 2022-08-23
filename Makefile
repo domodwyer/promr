@@ -11,7 +11,7 @@ all: readme doc lint check
 README.md: README.Rmd
 	R --vanilla -e 'devtools::build_readme()'
 
-build: install_deps
+build: doc install_deps
 	R CMD build .
 
 check: build
