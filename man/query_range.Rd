@@ -56,8 +56,14 @@ query_range(
 # Specify the time range using POSIXct objects, and set the optional "step"
 query_range(
   "rate(http_requests_total[5m])",
-  Sys.time() - (60 * 60 * 24),
-  Sys.time(),
+  strptime(
+    "2022-08-20T20:10:30",
+    format = "\%Y-\%m-\%dT\%H:\%M:\%S"
+  ),
+  strptime(
+    "2022-08-21T20:10:30",
+    format = "\%Y-\%m-\%dT\%H:\%M:\%S"
+  ),
   step = "30s"
 )
 
