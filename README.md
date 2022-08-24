@@ -3,6 +3,8 @@
 
 # promr
 
+[![CRAN](https://www.r-pkg.org/badges/version/promr)](https://cran.rstudio.com/web/packages/promr/)
+
 `promr` is a
 [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)
 query client for the [Prometheus](https://prometheus.io/) time-series
@@ -10,7 +12,13 @@ database.
 
 ## Installation
 
-To install the development version using `devtools`:
+Install the latest release from CRAN:
+
+``` r
+install.packages("promr")
+```
+
+Or install the development version using `devtools`:
 
 ``` r
 devtools::install_github("domodwyer/promr")

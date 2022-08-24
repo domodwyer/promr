@@ -17,14 +17,23 @@ httptest::use_mock_api()
 
 # promr
 
+[![CRAN](https://www.r-pkg.org/badges/version/promr)][cran]
+
 `promr` is a [PromQL] query client for the [Prometheus] time-series database.
 
 [PromQL]: https://prometheus.io/docs/prometheus/latest/querying/basics/
 [Prometheus]: https://prometheus.io/
+[cran]: https://cran.rstudio.com/web/packages/promr/
 
 ## Installation
 
-To install the development version using `devtools`:
+Install the latest release from CRAN:
+
+```r
+install.packages("promr")
+```
+
+Or install the development version using `devtools`:
 
 ``` r
 devtools::install_github("domodwyer/promr")
