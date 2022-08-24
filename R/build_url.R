@@ -11,32 +11,32 @@
 #'     limit. Note this timeout is capped to the server-side value.
 #' @return A URL to execute the query.
 build_url <- function(base, query, start, end, step, timeout = NA) {
-    url <- urltools::url_parse(base)
-    url$path <- "api/v1/query_range"
+  url <- urltools::url_parse(base)
+  url$path <- "api/v1/query_range"
 
-    url <- urltools::url_compose(url) |>
-        urltools::param_set(
-            key = "query",
-            value = urltools::url_encode(query)
-        ) |>
-        urltools::param_set(
-            key = "start",
-            value = cast_timestamp(start)
-        ) |>
-        urltools::param_set(
-            key = "end",
-            value = cast_timestamp(end)
-        ) |>
-        urltools::param_set(
-            key = "step",
-            value = step
-        )
+  url <- urltools::url_compose(url) |>
+    urltools::param_set(
+      key = "query",
+      value = urltools::url_encode(query)
+    ) |>
+    urltools::param_set(
+      key = "start",
+      value = cast_timestamp(start)
+    ) |>
+    urltools::param_set(
+      key = "end",
+      value = cast_timestamp(end)
+    ) |>
+    urltools::param_set(
+      key = "step",
+      value = step
+    )
 
-    if (!is.na(timeout)) {
-        url <- urltools::param_set(url, key = "timeout", value = timeout)
-    }
+  if (!is.na(timeout)) {
+    url <- urltools::param_set(url, key = "timeout", value = timeout)
+  }
 
-    return(url)
+  return(url)
 }
 
 #' A helper function to map an input of various types to a timestamp string
@@ -46,16 +46,16 @@ build_url <- function(base, query, start, end, step, timeout = NA) {
 #'     object.
 #' @return A Prometheus-compatible timestamp that can be coerced to a string.
 cast_timestamp <- function(input) {
-    out <- switch(typeof(input),
-        "character" = input,
-        "double" = input,
-        NULL
-    )
-    if (!is.null(out)) {
-        return(out)
-    }
-    if (inherits(input, "POSIXt")) {
-        return(as.numeric(input))
-    }
-    stop("unknown timestamp type")
+  out <- switch(typeof(input),
+    "character" = input,
+    "double" = input,
+    NULL
+  )
+  if (!is.null(out)) {
+    return(out)
+  }
+  if (inherits(input, "POSIXt")) {
+    return(as.numeric(input))
+  }
+  stop("unknown timestamp type")
 }
