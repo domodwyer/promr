@@ -85,7 +85,7 @@ query_range <- function(query,
     }
 
     # Compute the number of measurements in the tuple list
-    values <- unlist(r$value)
+    values <- unlist(r[["values"]])
     n_rows <- length(values) / 2
 
     # Construct a tibble of values by first unrolling the list, and then turning
