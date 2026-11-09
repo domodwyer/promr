@@ -108,6 +108,22 @@ with_mock_api({
     expect_equal(colnames(got$values[[1]]), c("timestamp", "value"))
   })
 
+  test_that("series with different label sets", {
+    # Prometheus omits labels with an empty value, so the "node" series below
+    # has no "env" label at all.
+    got <- query_range(
+      "max by (job, env) (up)",
+      "2022-08-21T00:00:00Z",
+      "2022-08-21T00:00:30Z",
+      step = "15s"
+    )
+
+    expect_equal(colnames(got), c("job", "env", "values"))
+    expect_equal(got$job, c("prometheus", "node"))
+    expect_equal(got$env, c("prod", NA))
+    expect_equal(got$values[[2]]$value, c(0, 1, 1))
+  })
+
   test_that("error messages are returned to the user", {
     # nolint start: line_length_linter
     q <- "sum(rate(dml_handler_write_duration_seconds_bucket{handler=\"bananas\"}[1m]))"
