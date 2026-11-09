@@ -12,7 +12,7 @@ cast_timestamp(input)
 object.}
 }
 \value{
-A Prometheus-compatible timestamp that can be coerced to a string.
+A Prometheus-compatible timestamp string.
 }
 \description{
 A helper function to map an input of various types to a timestamp string

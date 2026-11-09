@@ -44,18 +44,20 @@ build_url <- function(base, query, start, end, step, timeout = NA) {
 #'
 #' @param input A RFC3339 timestamp string, numerical unix timestamp, or POSIXct
 #'     object.
-#' @return A Prometheus-compatible timestamp that can be coerced to a string.
+#' @return A Prometheus-compatible timestamp string.
 cast_timestamp <- function(input) {
-  out <- switch(typeof(input),
-    "character" = input,
-    "double" = input,
-    NULL
-  )
-  if (!is.null(out)) {
-    return(out)
-  }
+  # POSIXct is typeof "double", so the class check must come before any
+  # type-based dispatch, otherwise the date is pasted into the URL verbatim.
   if (inherits(input, "POSIXt")) {
-    return(as.numeric(input))
+    input <- as.numeric(as.POSIXct(input))
+  }
+  if (is.character(input)) {
+    return(input)
+  }
+  if (is.numeric(input)) {
+    # Always fixed notation: as.character(1.7e9) is "1.7e+09", and the "+" is
+    # decoded as a space by the server.
+    return(format(input, scientific = FALSE, digits = 15, trim = TRUE))
   }
   stop("unknown timestamp type")
 }
