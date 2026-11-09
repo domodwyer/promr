@@ -70,8 +70,8 @@ query_range <- function(query,
     stop("unexpected result type ", d$data$resultType)
   }
 
-  # Populate the output tibble
-  df <- tibble::tibble()
+  # Build one row per series
+  rows <- list()
   for (r in d$data$result) {
     # Capture the name + labels
     row <- tibble::as_tibble(r$metric)
@@ -111,8 +111,33 @@ query_range <- function(query,
     row$values <- list(values)
 
     # Add this metric to the output
-    df <- rbind(df, row)
+    rows[[length(rows) + 1]] <- row
   }
 
-  return(df)
+  return(bind_series(rows))
+}
+
+#' Bind the rows of all series into a single tibble.
+#'
+#' Series returned by the same query may have different label sets (for
+#' example, Prometheus omits labels with an empty value), so any label missing
+#' from a series is filled with NA. The nested values are kept as the last
+#' column.
+#'
+#' @param rows A list of single-row tibbles, one per series.
+#' @return A tibble of all series, with nested measurements.
+bind_series <- function(rows) {
+  if (length(rows) == 0) {
+    return(tibble::tibble())
+  }
+
+  labels <- setdiff(unique(unlist(lapply(rows, names))), "values")
+  rows <- lapply(rows, function(row) {
+    for (label in setdiff(labels, names(row))) {
+      row[[label]] <- NA_character_
+    }
+    row[c(labels, "values")]
+  })
+
+  return(do.call(rbind, rows))
 }
